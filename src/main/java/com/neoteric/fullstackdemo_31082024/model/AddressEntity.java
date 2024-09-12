@@ -14,6 +14,7 @@ public class AddressEntity {
     }
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     public Integer id;
 
@@ -21,9 +22,8 @@ public class AddressEntity {
     public String state;
 
     @ManyToOne
-    @JoinColumn
-    public AdharEntity adharEntity;
-
-
+    @JoinColumn(name = "adharnumber",
+                 referencedColumnName = "adharnumber")
+    public AdharEntity myMappedByTestEntity;
 
 }

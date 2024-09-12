@@ -12,6 +12,7 @@ import java.util.List;
 public class AdharEntity {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "adharnumber")
     public Integer adharNumber;
 
@@ -19,7 +20,7 @@ public class AdharEntity {
     @Column(name = "name")
     public String name;
 
-    @OneToMany
+    @OneToMany(mappedBy = "myMappedByTestEntity")
     public List<AddressEntity> addressEntityList;
 
 

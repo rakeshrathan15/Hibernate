@@ -1,7 +1,7 @@
 package com.neoteric.fullstackdemo_31082024.hibernate;
 
 import com.fasterxml.jackson.databind.annotation.JsonAppend;
-import com.neoteric.fullstackdemo_31082024.model.Account;
+import com.neoteric.fullstackdemo_31082024.model.*;
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
@@ -18,7 +18,7 @@ public class HibernateUtils {
         if(sessionFactory==null){
             Configuration configuration= new Configuration();
             Properties properties= new Properties();
-            properties.put(Environment.DRIVER,"com.mysql.cjjdbc.Driver");
+            properties.put(Environment.DRIVER,"com.mysql.cj.jdbc.Driver");
             properties.put(Environment.URL,"jdbc:mysql://@localhost:3306/bank");
             properties.put(Environment.USER,"root");
             properties.put(Environment.PASS,"rakesh");
@@ -27,7 +27,10 @@ public class HibernateUtils {
 
 
             configuration.setProperties(properties);
-            configuration.addAnnotatedClass(Account.class);
+            configuration.addAnnotatedClass(AccountEntity.class)
+                    .addAnnotatedClass(AdharEntity.class)
+                    .addAnnotatedClass(AddressEntity.class)
+                    .addAnnotatedClass(AccountAddressEntity.class);
 
             ServiceRegistry serviceRegistry=new StandardServiceRegistryBuilder()
                     .applySettings(configuration.getProperties())

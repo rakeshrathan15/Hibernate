@@ -13,4 +13,7 @@ public class Account {
    private String pan;
    private String  mobileNumber;
    private double balance;
+
+   private Address address;
+
 }
