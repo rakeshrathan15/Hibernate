@@ -12,7 +12,7 @@ import java.util.List;
 public class AdharEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "adharnumber")
     public Integer adharNumber;
 

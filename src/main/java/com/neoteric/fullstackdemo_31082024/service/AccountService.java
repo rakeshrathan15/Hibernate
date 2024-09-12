@@ -57,6 +57,8 @@ public class AccountService {
 
         List<AccountAddressEntity> accountAddressEntityList = new ArrayList<>();
         AccountAddressEntity accountAddressEntity= new AccountAddressEntity();
+
+
         accountAddressEntity.setAddress1(account.getAddress().getAdd1());
         accountAddressEntity.setAddress2(account.getAddress().getAdd2());
         accountAddressEntity.setState(account.getAddress().getState());
@@ -67,9 +69,6 @@ public class AccountService {
 
         accountAddressEntityList.add(accountAddressEntity);
         accountEntity.setAccountAddressEntityList(accountAddressEntityList);
-
-
-
 
 
 
