@@ -32,7 +32,7 @@ public class AccountEntity {
     private double balance;
 
     @OneToMany(mappedBy = "accountEntity",
-    cascade = CascadeType.PERSIST)
+    cascade = CascadeType.PERSIST,fetch = FetchType.LAZY  )
     public List<AccountAddressEntity> accountAddressEntityList;
 
 

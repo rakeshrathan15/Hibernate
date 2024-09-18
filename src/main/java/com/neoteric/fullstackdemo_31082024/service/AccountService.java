@@ -3,9 +3,13 @@ package com.neoteric.fullstackdemo_31082024.service;
 import com.neoteric.fullstackdemo_31082024.exception.AccountCreationFailedException;
 import com.neoteric.fullstackdemo_31082024.hibernate.HibernateUtils;
 import com.neoteric.fullstackdemo_31082024.model.*;
+import jakarta.persistence.criteria.CriteriaBuilder;
+import jakarta.persistence.criteria.CriteriaQuery;
+import jakarta.persistence.criteria.Root;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
+import org.hibernate.query.Query;
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -13,6 +17,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+
 
 public class AccountService {
 
@@ -140,4 +145,97 @@ public class AccountService {
         }
         return accountNumber;
     }
+
+
+
+
+
+
+    public Account searchAccount(String accounNumber){
+        SessionFactory sessionFactory= HibernateUtils.getSessionFactory();
+        Session session= sessionFactory.openSession();
+        Query<AccountEntity> query=session.createQuery("From AccountEntity a where a.accountNumber=:inputAccountNumber");
+        query.setParameter("inputAccountNumber",accounNumber);
+        AccountEntity accountEntity= query.list().get(0);
+
+        Account account= Account.builder()
+                .accountNumber(accountEntity.getAccountNumber())
+                .mobileNumber(accountEntity.getMobileNumber())
+                .balance(accountEntity.getBalance())
+                .pan(accountEntity.getPan())
+                .address(
+                        Address.builder()
+                                .add1(accountEntity.getAccountAddressEntityList().get(0).getAddress1())
+                                .add2(accountEntity.getAccountAddressEntityList().get(0).getAddress2())
+
+                                .build()
+                ).build();
+
+        return account;
+
+    }
+
+
+
+// Other imports...
+
+    public Account searchAccountCriteria(String accountNumber) {
+        SessionFactory sessionFactory = HibernateUtils.getSessionFactory();
+        Session session = sessionFactory.openSession();
+
+        Account account = null;
+
+        try {
+            // Begin transaction
+            session.beginTransaction();
+
+            // Create CriteriaBuilder
+            CriteriaBuilder cb = session.getCriteriaBuilder();
+
+            // Create CriteriaQuery
+            CriteriaQuery<AccountEntity> cq = cb.createQuery(AccountEntity.class);
+
+            // Define the root of the query (FROM AccountEntity)
+            Root<AccountEntity> root = cq.from(AccountEntity.class);
+
+            // Add restriction (WHERE accountNumber = :accountNumber)
+            cq.select(root).where(cb.equal(root.get("accountNumber"), accountNumber));
+
+            // Execute the query
+            Query<AccountEntity> query = session.createQuery(cq);
+            AccountEntity accountEntity = query.getSingleResult();
+
+            // Commit transaction
+            session.getTransaction().commit();
+
+            // Map AccountEntity to Account DTO
+            if (accountEntity != null) {
+                account = Account.builder()
+                        .accountNumber(accountEntity.getAccountNumber())
+                        .mobileNumber(accountEntity.getMobileNumber())
+                        .balance(accountEntity.getBalance())
+                        .pan(accountEntity.getPan())
+                        .address(
+                                Address.builder()
+                                        .add1(accountEntity.getAccountAddressEntityList().get(0).getAddress1())
+                                        .add2(accountEntity.getAccountAddressEntityList().get(0).getAddress2())
+                                        .build()
+                        ).build();
+            }
+
+        } catch (Exception e) {
+            // Rollback transaction if something goes wrong
+            if (session.getTransaction() != null) {
+                session.getTransaction().rollback();
+            }
+            e.printStackTrace();
+        } finally {
+            session.close();
+        }
+
+        return account;
+    }
+
+
+
 }

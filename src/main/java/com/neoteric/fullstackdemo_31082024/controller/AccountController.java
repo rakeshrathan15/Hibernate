@@ -4,10 +4,7 @@ package com.neoteric.fullstackdemo_31082024.controller;
 import com.neoteric.fullstackdemo_31082024.exception.AccountCreationFailedException;
 import com.neoteric.fullstackdemo_31082024.model.Account;
 import com.neoteric.fullstackdemo_31082024.service.AccountService;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 
 @CrossOrigin("*")
@@ -70,4 +67,25 @@ public class AccountController {
         return  account;
 
     }
+
+//    @GetMapping(value = "api/searchAccount",
+//    consumes = "application/json",
+//    produces = "application/json")
+//
+//    public Account searchAccount(@RequestHeader("accountinput")
+//                                 String accountNumber){
+//        AccountService accountService= new AccountService();
+//        return accountService.searchAccount(accountNumber);
+//    }
+
+    @GetMapping(value = "api/searchAccount/criteria",
+            consumes = "application/json",
+            produces = "application/json")
+
+    public Account searchAccountcriteria(@RequestHeader("accountinput")
+                                 String accountNumber){
+        AccountService accountService= new AccountService();
+        return accountService.searchAccountCriteria(accountNumber);
+    }
+
 }
