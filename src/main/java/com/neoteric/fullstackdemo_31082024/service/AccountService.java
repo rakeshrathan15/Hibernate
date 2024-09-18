@@ -2,7 +2,14 @@ package com.neoteric.fullstackdemo_31082024.service;
 
 import com.neoteric.fullstackdemo_31082024.exception.AccountCreationFailedException;
 import com.neoteric.fullstackdemo_31082024.hibernate.HibernateUtils;
+
 import com.neoteric.fullstackdemo_31082024.model.*;
+import com.neoteric.fullstackdemo_31082024.model.AccountAddressEntity;
+import com.neoteric.fullstackdemo_31082024.model.AccountEntity;
+import com.neoteric.fullstackdemo_31082024.model.Address;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.EntityManagerFactory;
+import jakarta.persistence.Persistence;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.Root;
@@ -16,10 +23,52 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 
 
 public class AccountService {
+
+
+    public Account searchAccountByJPA(String accountNumber){
+
+        EntityManagerFactory emf= Persistence.createEntityManagerFactory("jpaDemo");
+        EntityManager entityManager=emf.createEntityManager();
+        entityManager.getTransaction().begin();
+        jakarta.persistence.Query query=entityManager.createQuery("Select a from AccountEntity a where a.accountNumber=:inputAccountNumber");
+        query.setParameter("inputAccountNumber",accountNumber);
+
+        List<AccountEntity> accountEntities=query.getResultList();
+        AccountEntity accountEntity=accountEntities.get(0);
+
+        Account account= Account.builder()
+                .accountNumber(accountEntity.getAccountNumber())
+                .mobileNumber(accountEntity.getMobileNumber())
+                .balance(accountEntity.getBalance())
+                .pan(accountEntity.getPan()).build();
+
+
+
+        List<AccountAddressEntity> accountAddressEntityList=
+                accountEntity.getAccountAddressEntityList();
+
+        if (Objects.nonNull(accountAddressEntityList) && accountAddressEntityList.size()>0){
+            AccountAddressEntity accountAddressEntity=accountAddressEntityList.get(0);
+            Address address= new Address();
+            address.setAdd1(accountAddressEntity.getAddress1());
+            address.setAdd2(accountAddressEntity.getAddress2());
+            address.setCity(accountAddressEntity.getCity());
+            address.setPincode(accountAddressEntity.getPincode());
+            address.setState(accountAddressEntity.getState());
+            account.setAddress(address);
+        }
+        entityManager.getTransaction().commit();
+        return account;
+
+    }
+
+
+
 
     public String oneToManyUsingHibernate(Account account){
 

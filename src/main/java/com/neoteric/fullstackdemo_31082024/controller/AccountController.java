@@ -88,4 +88,16 @@ public class AccountController {
         return accountService.searchAccountCriteria(accountNumber);
     }
 
+
+    @GetMapping(value ="api/searchAccount",
+     consumes = "application/json",
+            produces = "application/json")
+    public Account searchAccountJPA(@RequestHeader("accountinput")
+                                         String accountNumber){
+
+
+        AccountService accountService= new AccountService();
+        return accountService.searchAccountByJPA(accountNumber);
+    }
+
 }
