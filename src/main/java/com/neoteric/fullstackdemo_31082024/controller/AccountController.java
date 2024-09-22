@@ -4,6 +4,7 @@ package com.neoteric.fullstackdemo_31082024.controller;
 import com.neoteric.fullstackdemo_31082024.exception.AccountCreationFailedException;
 import com.neoteric.fullstackdemo_31082024.model.Account;
 import com.neoteric.fullstackdemo_31082024.service.AccountService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 
@@ -98,6 +99,18 @@ public class AccountController {
 
         AccountService accountService= new AccountService();
         return accountService.searchAccountByJPA(accountNumber);
+    }
+
+
+    @Autowired
+    AccountService accountServiceTest;
+
+    @GetMapping(value = "/api/searchAccount/Datajpa",
+            consumes = "application/json",
+            produces = "application/json")
+    public Account getAccountNumber(@RequestHeader ("accountinput")
+                                    String accountNumber){
+        return accountServiceTest.searchAccountByManagedJPA(accountNumber);
     }
 
 }

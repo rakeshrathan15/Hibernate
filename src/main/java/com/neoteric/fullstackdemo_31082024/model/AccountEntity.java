@@ -31,6 +31,9 @@ public class AccountEntity {
     @Column(name = "balance",nullable = false)
     private double balance;
 
+
+
+
     @OneToMany(mappedBy = "accountEntity",
     cascade = CascadeType.PERSIST,fetch = FetchType.LAZY  )
     public List<AccountAddressEntity> accountAddressEntityList;

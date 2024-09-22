@@ -7,6 +7,7 @@ import com.neoteric.fullstackdemo_31082024.model.*;
 import com.neoteric.fullstackdemo_31082024.model.AccountAddressEntity;
 import com.neoteric.fullstackdemo_31082024.model.AccountEntity;
 import com.neoteric.fullstackdemo_31082024.model.Address;
+import com.neoteric.fullstackdemo_31082024.repository.AccountRepository;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.Persistence;
@@ -17,17 +18,53 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.query.Query;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-import java.util.UUID;
+import java.util.*;
 
-
+@Service(value = "accountServiceTest")
 public class AccountService {
+
+
+    @Autowired
+    AccountRepository accountRepository;
+
+    public Account searchAccountByManagedJPA(String accountNumber) {
+        Account account = null;
+        Optional<AccountEntity> optionalAccountEntity = accountRepository.findById(accountNumber);
+
+        if (optionalAccountEntity.isPresent()) {
+            AccountEntity accountEntity = optionalAccountEntity.get();
+
+            account = Account.builder()
+                    .accountNumber(accountEntity.getAccountNumber())
+                    .mobileNumber(accountEntity.getMobileNumber())
+                    .balance(accountEntity.getBalance())
+                    .pan(accountEntity.getPan()).build();
+
+            List<AccountAddressEntity> accountAddressEntityList =
+                    accountEntity.getAccountAddressEntityList();
+
+            if (Objects.nonNull(accountAddressEntityList) && accountAddressEntityList.size() > 0) {
+                AccountAddressEntity accountAddressEntity = accountAddressEntityList.get(0);
+                Address address = new Address();
+                address.setAdd1(accountAddressEntity.getAddress1());
+                address.setAdd2(accountAddressEntity.getAddress2());
+                address.setCity(accountAddressEntity.getCity());
+                address.setPincode(accountAddressEntity.getPincode());
+                address.setState(accountAddressEntity.getState());
+
+                account.setAddress(address);
+            }
+
+        }
+        return account;
+
+    }
 
 
     public Account searchAccountByJPA(String accountNumber){
