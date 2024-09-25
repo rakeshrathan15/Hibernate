@@ -26,45 +26,80 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.*;
 
-@Service(value = "accountServiceTest")
+
 public class AccountService {
 
 
-    @Autowired
-    AccountRepository accountRepository;
-
-    public Account searchAccountByManagedJPA(String accountNumber) {
-        Account account = null;
-        Optional<AccountEntity> optionalAccountEntity = accountRepository.findById(accountNumber);
-
-        if (optionalAccountEntity.isPresent()) {
-            AccountEntity accountEntity = optionalAccountEntity.get();
-
-            account = Account.builder()
-                    .accountNumber(accountEntity.getAccountNumber())
-                    .mobileNumber(accountEntity.getMobileNumber())
-                    .balance(accountEntity.getBalance())
-                    .pan(accountEntity.getPan()).build();
-
-            List<AccountAddressEntity> accountAddressEntityList =
-                    accountEntity.getAccountAddressEntityList();
-
-            if (Objects.nonNull(accountAddressEntityList) && accountAddressEntityList.size() > 0) {
-                AccountAddressEntity accountAddressEntity = accountAddressEntityList.get(0);
-                Address address = new Address();
-                address.setAdd1(accountAddressEntity.getAddress1());
-                address.setAdd2(accountAddressEntity.getAddress2());
-                address.setCity(accountAddressEntity.getCity());
-                address.setPincode(accountAddressEntity.getPincode());
-                address.setState(accountAddressEntity.getState());
-
-                account.setAddress(address);
-            }
-
-        }
-        return account;
-
-    }
+//    @Autowired
+//    AccountRepository accountRepository;
+//
+//    public Account searchAccountByAccountAndPan(String accountNumber, String pan) {
+//        Account account = null;
+//
+//        // Fetch the AccountEntity using account number and pan
+//        AccountEntity accountEntity = accountRepository.findByAccountNumberAndPan(accountNumber, pan);
+//
+//        if (accountEntity != null) {
+//            // Build the Account object from AccountEntity
+//            account = Account.builder()
+//                    .accountNumber(accountEntity.getAccountNumber())
+//                    .mobileNumber(accountEntity.getMobileNumber())
+//                    .balance(accountEntity.getBalance())
+//                    .pan(accountEntity.getPan()).build();
+//
+//            // Check for address details
+//            List<AccountAddressEntity> accountAddressEntityList =
+//                    accountEntity.getAccountAddressEntityList();
+//
+//            if (Objects.nonNull(accountAddressEntityList) && accountAddressEntityList.size() > 0) {
+//                AccountAddressEntity accountAddressEntity = accountAddressEntityList.get(0);
+//                Address address = new Address();
+//                address.setAdd1(accountAddressEntity.getAddress1());
+//                address.setAdd2(accountAddressEntity.getAddress2());
+//                address.setCity(accountAddressEntity.getCity());
+//                address.setPincode(accountAddressEntity.getPincode());
+//                address.setState(accountAddressEntity.getState());
+//
+//                account.setAddress(address);
+//            }
+//        }
+//        return account;
+//    }
+//
+//
+//
+//    public Account searchAccountByManagedJPA(String accountNumber) {
+//        Account account = null;
+//        Optional<AccountEntity> optionalAccountEntity = accountRepository.findById(accountNumber);
+//
+//        if (optionalAccountEntity.isPresent()) {
+//            AccountEntity accountEntity = optionalAccountEntity.get();
+//
+//            account = Account.builder()
+//                    .accountNumber(accountEntity.getAccountNumber())
+//                    .mobileNumber(accountEntity.getMobileNumber())
+//                    .balance(accountEntity.getBalance())
+//                    .pan(accountEntity.getPan()).build();
+//
+//            List<AccountAddressEntity> accountAddressEntityList =
+//                    accountEntity.getAccountAddressEntityList();
+//
+//            if (Objects.nonNull(accountAddressEntityList) && accountAddressEntityList.size() > 0) {
+//                AccountAddressEntity accountAddressEntity = accountAddressEntityList.get(0);
+//                Address address = new Address();
+//                address.setAdd1(accountAddressEntity.getAddress1());
+//                address.setAdd2(accountAddressEntity.getAddress2());
+//                address.setCity(accountAddressEntity.getCity());
+//                address.setPincode(accountAddressEntity.getPincode());
+//                address.setState(accountAddressEntity.getState());
+//
+//                account.setAddress(address);
+//            }
+//
+//        }
+//        return account;
+//
+//    }
 
 
     public Account searchAccountByJPA(String accountNumber){
@@ -79,7 +114,7 @@ public class AccountService {
         AccountEntity accountEntity=accountEntities.get(0);
 
         Account account= Account.builder()
-                .accountNumber(accountEntity.getAccountNumber())
+                .accountNumber(accountEntity.getAccountnumber())
                 .mobileNumber(accountEntity.getMobileNumber())
                 .balance(accountEntity.getBalance())
                 .pan(accountEntity.getPan()).build();
@@ -137,7 +172,7 @@ public class AccountService {
         Transaction transaction= session.beginTransaction();
 
         AccountEntity accountEntity= new AccountEntity();
-        accountEntity.setAccountNumber(UUID.randomUUID().toString());
+        accountEntity.setAccountnumber(UUID.randomUUID().toString());
         accountEntity.setName(account.getName());
         accountEntity.setPan(account.getPan());
         accountEntity.setBalance(account.getBalance());
@@ -165,7 +200,7 @@ public class AccountService {
 
         session.persist(accountEntity);
         transaction.commit();
-        return accountEntity.getAccountNumber();
+        return accountEntity.getAccountnumber();
     }
 
 
@@ -176,14 +211,14 @@ public class AccountService {
         Transaction transaction= session.beginTransaction();
 
       AccountEntity accountEntity=new AccountEntity();
-      accountEntity.setAccountNumber(UUID.randomUUID().toString());
+      accountEntity.setAccountnumber(UUID.randomUUID().toString());
       accountEntity.setName(account.getName());
       accountEntity.setPan(account.getPan());
       accountEntity.setBalance(account.getBalance());
       accountEntity.setMobileNumber(account.getMobileNumber());
       session.persist(accountEntity);
       transaction.commit();
-      return accountEntity.getAccountNumber();
+      return accountEntity.getAccountnumber();
     }
 
 
@@ -245,7 +280,7 @@ public class AccountService {
         AccountEntity accountEntity= query.list().get(0);
 
         Account account= Account.builder()
-                .accountNumber(accountEntity.getAccountNumber())
+                .accountNumber(accountEntity.getAccountnumber())
                 .mobileNumber(accountEntity.getMobileNumber())
                 .balance(accountEntity.getBalance())
                 .pan(accountEntity.getPan())
@@ -297,7 +332,7 @@ public class AccountService {
             // Map AccountEntity to Account DTO
             if (accountEntity != null) {
                 account = Account.builder()
-                        .accountNumber(accountEntity.getAccountNumber())
+                        .accountNumber(accountEntity.getAccountnumber())
                         .mobileNumber(accountEntity.getMobileNumber())
                         .balance(accountEntity.getBalance())
                         .pan(accountEntity.getPan())

@@ -4,6 +4,7 @@ package com.neoteric.fullstackdemo_31082024.controller;
 import com.neoteric.fullstackdemo_31082024.exception.AccountCreationFailedException;
 import com.neoteric.fullstackdemo_31082024.model.Account;
 import com.neoteric.fullstackdemo_31082024.service.AccountService;
+import com.neoteric.fullstackdemo_31082024.service.AccountServiceWithJpa;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -90,7 +91,7 @@ public class AccountController {
     }
 
 
-    @GetMapping(value ="api/searchAccount",
+    @GetMapping(value ="api/searchAccount/jpa",
      consumes = "application/json",
             produces = "application/json")
     public Account searchAccountJPA(@RequestHeader("accountinput")
@@ -102,15 +103,29 @@ public class AccountController {
     }
 
 
-    @Autowired
-    AccountService accountServiceTest;
+//    @Autowired
+//    AccountService accountServiceTest;
 
-    @GetMapping(value = "/api/searchAccount/Datajpa",
-            consumes = "application/json",
-            produces = "application/json")
-    public Account getAccountNumber(@RequestHeader ("accountinput")
-                                    String accountNumber){
-        return accountServiceTest.searchAccountByManagedJPA(accountNumber);
-    }
+
+
+//    @GetMapping(value = "/api/searchAccount/jpa1",
+//            consumes = "application/json",
+//            produces = "application/json")
+//    public Account getAccountNumber(@RequestHeader ("accountinput")
+//                                    String accountNumber){
+//        return accountServiceTest.searchAccountByManagedJPA(accountNumber);
+//    }
+
+//    @GetMapping(value = "/api/searchAccount",
+//            consumes = "application/json",
+//            produces = "application/json")
+//    public Account getAccountByNumberAndPan(@RequestHeader("accountNumber") String accountNumber,
+//                                            @RequestHeader("pan") String pan) {
+//        return accountServiceTest.searchAccountByAccountAndPan(accountNumber, pan);
+//    }
+
+
+
+
 
 }

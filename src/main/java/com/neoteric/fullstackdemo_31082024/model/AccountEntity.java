@@ -20,7 +20,7 @@ public class AccountEntity {
 
     @Id
     @Column(name = "accountnumber")
-    private  String accountNumber;
+    private  String accountnumber;
 
     @Column(name = "pan",nullable = false)
     private String pan;
