@@ -101,4 +101,107 @@ public class AccountServiceWithJpa {
     }
 
 
+
+    public Account searchAccountByAccountAddressJPQL(String accountnumber){
+        Account account=null;
+        AccountEntity accountEntity =accountRepositary2.getAccountEntityAddress(accountnumber);
+        if(accountEntity!= null){
+
+            account=Account.builder()
+                    .accountNumber(accountEntity.getAccountnumber())
+                    .mobileNumber(accountEntity.getMobileNumber())
+                    .balance(accountEntity.getBalance())
+                    .pan(accountEntity.getPan())
+                    .name(accountEntity.getName()).build();
+            List<AccountAddressEntity> accountAddressEntityList =
+                    accountEntity.getAccountAddressEntityList();
+            if (Objects.nonNull(accountAddressEntityList) && accountAddressEntityList.size() > 0) {
+                AccountAddressEntity accountAddressEntity = accountAddressEntityList.get(0);
+                Address address = new Address();
+                address.setAdd1(accountAddressEntity.getAddress1());
+                address.setAdd2(accountAddressEntity.getAddress2());
+                address.setCity(accountAddressEntity.getCity());
+                address.setPincode(accountAddressEntity.getPincode());
+                address.setState(accountAddressEntity.getState());
+
+                account.setAddress(address);
+            }
+        }
+        return account;
+    }
+
+
+
+
+
+
+
+
+    public Account searchAccountByAddressJPQl(String accountnumber){
+
+        Account account=null;
+        AccountEntity accountEntity =accountRepositary2.getAccountEntityAddress(accountnumber);
+        if(accountEntity!= null){
+
+            account=Account.builder()
+                    .accountNumber(accountEntity.getAccountnumber())
+                    .mobileNumber(accountEntity.getMobileNumber())
+                    .balance(accountEntity.getBalance())
+                    .pan(accountEntity.getPan())
+                    .name(accountEntity.getName()).build();
+            List<AccountAddressEntity> accountAddressEntityList =
+                    accountEntity.getAccountAddressEntityList();
+            if (Objects.nonNull(accountAddressEntityList) && accountAddressEntityList.size() > 0) {
+                AccountAddressEntity accountAddressEntity = accountAddressEntityList.get(0);
+                Address address = new Address();
+                address.setAdd1(accountAddressEntity.getAddress1());
+                address.setAdd2(accountAddressEntity.getAddress2());
+                address.setCity(accountAddressEntity.getCity());
+                address.setPincode(accountAddressEntity.getPincode());
+                address.setState(accountAddressEntity.getState());
+
+                account.setAddress(address);
+
+
+            }
+        }
+        return account;
+    }
+
+
+
+
+
+
+    public Account searchAccountByAddressStatusJPQl(String accountnumber,Integer status){
+
+        Account account=null;
+        AccountEntity accountEntity =accountRepositary2.getAccountEntityAddressstatus(accountnumber,status);
+        if(accountEntity!= null){
+
+            account=Account.builder()
+                    .accountNumber(accountEntity.getAccountnumber())
+                    .mobileNumber(accountEntity.getMobileNumber())
+                    .balance(accountEntity.getBalance())
+                    .pan(accountEntity.getPan())
+                    .name(accountEntity.getName()).build();
+            List<AccountAddressEntity> accountAddressEntityList =
+                    accountEntity.getAccountAddressEntityList();
+            if (Objects.nonNull(accountAddressEntityList) && accountAddressEntityList.size() > 0) {
+                AccountAddressEntity accountAddressEntity = accountAddressEntityList.get(0);
+                Address address = new Address();
+                address.setAdd1(accountAddressEntity.getAddress1());
+                address.setAdd2(accountAddressEntity.getAddress2());
+                address.setCity(accountAddressEntity.getCity());
+                address.setPincode(accountAddressEntity.getPincode());
+                address.setState(accountAddressEntity.getState());
+
+                account.setAddress(address);
+
+
+            }
+        }
+        return account;
+    }
+
 }

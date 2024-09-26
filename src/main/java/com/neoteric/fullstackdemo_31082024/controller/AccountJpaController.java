@@ -4,10 +4,7 @@ import com.neoteric.fullstackdemo_31082024.model.Account;
 import com.neoteric.fullstackdemo_31082024.model.AccountEntity;
 import com.neoteric.fullstackdemo_31082024.service.AccountServiceWithJpa;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 @RestController
@@ -16,6 +13,35 @@ public class AccountJpaController {
 
     @Autowired
     AccountServiceWithJpa accountServiceWithSpringJpa;
+
+
+
+    @GetMapping(value = "/api/searchAccount/AddressStatusJpql",
+            consumes = "application/json",
+            produces = "application/json")
+    public Account getAccountAddressStatus(@RequestHeader("accountinput")
+                                     String accountnumber,  @RequestHeader("statusinput")Integer status) {
+        return accountServiceWithSpringJpa.searchAccountByAddressStatusJPQl(accountnumber,status);
+    }
+
+
+    @GetMapping(value = "/api/searchAccount/AccountAddressJpql",
+            consumes = "application/json",
+            produces = "application/json")
+    public Account getAccountAddress(@RequestHeader("accountinput")
+                                                 String accountnumber) {
+        return accountServiceWithSpringJpa.searchAccountByAccountAddressJPQL(accountnumber);
+    }
+
+
+
+    @GetMapping(value = "/api/searchAccount/balance",
+            consumes = "application/json",
+            produces = "application/json")
+    public List<AccountEntity> getAccountBalance(@RequestParam("balanceinput") double balance) {
+        return accountServiceWithSpringJpa.accountLessThanBalance(balance);
+    }
+
 
 
     @GetMapping(value = "/api/searchAccount/Jpql",
@@ -33,13 +59,13 @@ public class AccountJpaController {
                                              String accountnumber, @RequestHeader("paninput") String pan) {
         return accountServiceWithSpringJpa.searchAccountByAccountAndPan(accountnumber, pan);
     }
-
-    @GetMapping(value = "/api/searchAccount/balance",
-            consumes = "application/json",
-            produces = "application/json")
-    public List<AccountEntity> searchByBalance(@RequestHeader("balanceinput") double balance){
-        return accountServiceWithSpringJpa.accountLessThanBalance(balance);
-    }
+//
+//    @GetMapping(value = "/api/searchAccount/balance",
+//            consumes = "application/json",
+//            produces = "application/json")
+//    public List<AccountEntity> searchByBalance(@RequestHeader("balanceinput") double balance){
+//        return accountServiceWithSpringJpa.accountLessThanBalance(balance);
+//    }
 
     @GetMapping(value = "/api/searchAccount/balanceGreater",
             consumes = "application/json",

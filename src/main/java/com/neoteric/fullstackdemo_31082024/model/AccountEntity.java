@@ -32,6 +32,8 @@ public class AccountEntity {
     private double balance;
 
 
+    // @Column(name = "")
+
 
 
     @OneToMany(mappedBy = "accountEntity",
