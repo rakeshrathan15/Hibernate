@@ -12,7 +12,7 @@ import java.util.List;
 public interface AccountRepository extends JpaRepository<AccountEntity,String> {
 
 
-     @Query("select a from AccountEntity a left join fetch a.accountAddressEntityList ad where a.accountnumber=ad.accountnumber"
+     @Query("select a from AccountEntity a  join fetch a.accountAddressEntityList ad where a.accountnumber=ad.accountnumber"
              +" and a.accountnumber=:accountnumber and ad.status=:status")
      AccountEntity getAccountEntityAddressstatus(@Param("accountnumber") String accountnumber,
                                                  @Param("status") Integer status);
